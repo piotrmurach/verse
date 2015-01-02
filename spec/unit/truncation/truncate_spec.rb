@@ -5,28 +5,28 @@ require 'spec_helper'
 RSpec.describe Verse::Truncation, '.truncate' do
   let(:text) { 'ラドクリフ、マラソン五輪代表に1万m出場にも含み' }
 
-  it 'with zero length' do
+  it "doesn't change text for 0 length" do
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate(0)).to eq(text)
   end
 
-  it 'with nil length' do
+  it "doensn't change text for nil length" do
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate(nil)).to eq(text)
   end
 
-  it 'with equal length' do
+  it "doesn't change text for equal length" do
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate(text.length)).to eq(text)
   end
 
-  it 'with truncation' do
+  it 'truncates text' do
     truncation = Verse::Truncation.new(text)
     trailing = '…'
     expect(truncation.truncate(12)).to eq("ラドクリフ、マラソン五#{trailing}")
   end
 
-  it 'without truncation' do
+  it "doesn't truncate text when length exceeds content" do
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate(100)).to eq(text)
   end
@@ -43,13 +43,13 @@ RSpec.describe Verse::Truncation, '.truncate' do
     expect(truncation.truncate(12, separator: /\s/)).to eq("ラドクリフ、マラソン五#{trailing}")
   end
 
-  it 'with custom trailing' do
+  it 'truncates text with custom trailing' do
     truncation = Verse::Truncation.new(text)
     trailing = '... (see more)'
     expect(truncation.truncate(20, trailing: trailing)).to eq("ラドクリフ、#{trailing}")
   end
 
-  it 'correctly calculates with ANSI characters' do
+  it 'correctly truncates with ANSI characters' do
     text = "This is a \e[1m\e[34mbold blue text\e[0m"
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate).to eq 'This is a bold blue text'
