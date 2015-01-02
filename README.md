@@ -40,6 +40,20 @@ truncation = Verse::Truncation.new "for there is no folly of the beast of the ea
 truncation.truncate(20) # => "for there is no fol…"
 ```
 
+
+### 1.2 wrap
+
+```ruby
+wrapping = Verse::Wrapping.new "Think not, is my eleventh commandment; " +
+                               "and sleep when you can, is my twelfth."
+
+
+wrapping.wrap(30)
+# => "Think not, is my eleventh"
+     "commandment; and sleep when"
+     "you can, is my twelfth."
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/peter-murach/verse/fork )
