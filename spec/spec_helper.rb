@@ -43,3 +43,7 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 end
+
+def unindent(text)
+  text.gsub(/^[ \t]*/, '').chomp
+end
