@@ -5,7 +5,7 @@ module Verse
   class Truncation
     DEFAULT_TRAILING = '…'.freeze
 
-    DEFAULT_TRUNCATION_LENGTH = 30.freeze
+    DEFAULT_LENGTH = 30.freeze
 
     attr_reader :separator
 
@@ -28,6 +28,15 @@ module Verse
       @trailing  = options.fetch(:trailing) { DEFAULT_TRAILING }
     end
 
+    # Truncate a text at a given length
+    #
+    # @see Verse::Truncation#truncate
+    #
+    # @api public
+    def self.truncate(text, truncate_at, options = {})
+      new(text).truncate(truncate_at, options)
+    end
+
     # Truncate a text at a given length (defualts to 30)
     #
     # @example
@@ -47,7 +56,7 @@ module Verse
     #   # => "The sovereignest thing on... (see more)"
     #
     # @api public
-    def truncate(truncate_at = DEFAULT_TRUNCATION_LENGTH, options = {})
+    def truncate(truncate_at = DEFAULT_LENGTH, options = {})
       if text.length <= truncate_at.to_i || truncate_at.to_i.zero?
         return text.dup
       end
