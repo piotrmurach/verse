@@ -54,4 +54,10 @@ RSpec.describe Verse::Truncation, '.truncate' do
     truncation = Verse::Truncation.new(text)
     expect(truncation.truncate).to eq 'This is a bold blue text'
   end
+
+  it "finishes on word boundary" do
+    text = "for there is no folly of the beast of the earth"
+    truncation = Verse::Truncation.new(text)
+    expect(truncation.truncate(20, separator: ' ')).to eq('for there is no…')
+  end
 end
