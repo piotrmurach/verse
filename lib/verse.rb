@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'verse/alignment'
 require 'verse/sanitizer'
 require 'verse/truncation'
 require 'verse/wrapping'
