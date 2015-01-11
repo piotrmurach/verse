@@ -23,10 +23,12 @@ module Verse
       @text    = text
       @indent  = options.fetch(:indent) { 0 }
       @padding = options.fetch(:padding) { [] }
+      @line_width = options.fetch(:line_width) { DEFAULT_WIDTH }
       @sanitizer = Sanitizer.new
     end
 
-    # Wrap a text into lines no longer than length
+    # Wrap a text into lines no longer than wrap_at length.
+    # Preserves existing lines and existing word boundaries.
     #
     # @example
     #   wrapping = Verse::Wrapping.new "Some longish text"
