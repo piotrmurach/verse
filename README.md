@@ -13,6 +13,10 @@
 
 > Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.
 
+## Features
+
+* No monkey-patching String class
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -31,7 +35,16 @@ Or install it yourself as:
 
 ## 1 Usage
 
-### 1.1 truncate
+### 1.1 align
+
+```ruby
+alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
+                                 " of the earth which\n" +
+                                 " is not infinitely\n" +
+                                 " outdone by the madness of men"
+```
+
+### 1.2 truncate
 
 ```ruby
 truncation = Verse::Truncation.new "for there is no folly of the beast of the earth " +
@@ -40,8 +53,7 @@ truncation = Verse::Truncation.new "for there is no folly of the beast of the ea
 truncation.truncate(20) # => "for there is no fol…"
 ```
 
-
-### 1.2 wrap
+### 1.3 wrap
 
 ```ruby
 wrapping = Verse::Wrapping.new "Think not, is my eleventh commandment; " +
