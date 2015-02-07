@@ -27,15 +27,21 @@ gem 'verse'
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install verse
+```bash
+$ gem install verse
+```
 
 ## 1 Usage
 
 ### 1.1 align
+
+**Verse** allows you to align text:
 
 ```ruby
 alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
@@ -44,12 +50,29 @@ alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
                                  " outdone by the madness of men"
 ```
 
+Then using `right`, `left` or `center` methods and passing width you can align the text:
+
+```ruby
+alignemnt.right(40) # =>
+    "      for there is no folly of the beast\n" +
+    "                      of the earth which\n" +
+    "                       is not infinitely\n" +
+    "           outdone by the madness of men"
+```
+
 ### 1.2 truncate
+
+Using **Verse** you can truncate a given text:
 
 ```ruby
 truncation = Verse::Truncation.new "for there is no folly of the beast of the earth " +
                                    "which is not infinitely outdone by the madness of men"
 
+```
+
+Then to shorten the text to given length call `truncate`:
+
+```ruby
 truncation.truncate(20) # => "for there is no fol…"
 ```
 
@@ -59,7 +82,11 @@ truncation.truncate(20) # => "for there is no fol…"
 wrapping = Verse::Wrapping.new "Think not, is my eleventh commandment; " +
                                "and sleep when you can, is my twelfth."
 
+```
 
+Then to wrap the text to given length call `wrap`:
+
+```ruby
 wrapping.wrap(30)
 # => "Think not, is my eleventh"
      "commandment; and sleep when"
