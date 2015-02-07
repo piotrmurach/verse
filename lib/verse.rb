@@ -19,4 +19,13 @@ module Verse
   def self.truncate(text, truncate_at, options = {})
     Truncation.truncate(text, truncate_at, options)
   end
+
+  # Wrap a text into lines at wrap length
+  #
+  # @see Verse::Wrapping#wrap
+  #
+  # @api public
+  def self.wrap(text, wrap_at, options = {})
+    Wrapping.wrap(text, wrap_at, options = {})
+  end
 end # Verse

@@ -27,6 +27,13 @@ module Verse
       @sanitizer = Sanitizer.new
     end
 
+    # Wrap a text into lines no longer than wrap_at
+    #
+    # @api public
+    def self.wrap(text, wrap_at, options = {})
+      new(text).wrap(wrap_at, options)
+    end
+
     # Wrap a text into lines no longer than wrap_at length.
     # Preserves existing lines and existing word boundaries.
     #
