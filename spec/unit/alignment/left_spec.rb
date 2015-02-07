@@ -14,9 +14,9 @@ RSpec.describe Verse::Alignment, '.left' do
     alignment = Verse::Alignment.new(text)
     expect(alignment.left(40)).to eq([
      "for there is no folly of the beast      \n",
-     " of the earth which                     \n",
-     " is not infinitely                      \n",
-     " outdone by the madness of men          "
+     "of the earth which                      \n",
+     "is not infinitely                       \n",
+     "outdone by the madness of men           "
     ].join)
   end
 
@@ -25,9 +25,9 @@ RSpec.describe Verse::Alignment, '.left' do
     alignment = Verse::Alignment.new(text, fill: '*')
     expect(alignment.left(40)).to eq([
      "for there is no folly of the beast******\n",
-     " of the earth which*********************\n",
-     " is not infinitely**********************\n",
-     " outdone by the madness of men**********"
+     "of the earth which**********************\n",
+     "is not infinitely***********************\n",
+     "outdone by the madness of men***********"
     ].join)
   end
 end

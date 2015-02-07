@@ -85,7 +85,7 @@ module Verse
     def process_lines
       lines = text.split(NEWLINE)
       lines.reduce([]) do |aligned, line|
-        aligned << yield(line)
+        aligned << yield(line.strip)
       end.join("\n")
     end
 
