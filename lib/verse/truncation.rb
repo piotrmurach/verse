@@ -34,7 +34,7 @@ module Verse
     #
     # @api public
     def self.truncate(text, truncate_at, options = {})
-      new(text).truncate(truncate_at, options)
+      new(text, options).truncate(truncate_at, options)
     end
 
     # Truncate a text at a given length (defualts to 30)
@@ -71,7 +71,7 @@ module Verse
       chars[0, stop || length_without_trailing].join + trail
     end
 
-    private
+    protected
 
     attr_reader :text
   end # Truncation

@@ -31,7 +31,7 @@ module Verse
     #
     # @api public
     def self.wrap(text, wrap_at, options = {})
-      new(text).wrap(wrap_at, options)
+      new(text, options).wrap(wrap_at, options)
     end
 
     # Wrap a text into lines no longer than wrap_at length.
@@ -117,6 +117,8 @@ module Verse
         part.insert(0, padding_left).insert(-1, padding_right)
       end
     end
+
+    protected
 
     attr_reader :text
   end # Wrapping

@@ -68,7 +68,7 @@ module Verse
       process_lines { |line| line.send(method, width, filler) }
     end
 
-    private
+    protected
 
     # @api private
     def convert_to_method(direction)
