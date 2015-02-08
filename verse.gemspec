@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Verse::VERSION
   spec.authors       = ["Piotr Murach"]
   spec.email         = [""]
-  spec.summary       = %q{}
-  spec.description   = %q{}
+  spec.summary       = %q{Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.}
+  spec.description   = %q{Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
