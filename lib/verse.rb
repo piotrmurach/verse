@@ -26,6 +26,6 @@ module Verse
   #
   # @api public
   def self.wrap(text, wrap_at, options = {})
-    Wrapping.wrap(text, wrap_at, options = {})
+    Wrapping.wrap(text, wrap_at, options)
   end
 end # Verse
