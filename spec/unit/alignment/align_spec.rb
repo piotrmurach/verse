@@ -3,6 +3,15 @@
 require 'spec_helper'
 
 RSpec.describe Verse::Alignment, '.align' do
+
+  it "doesn't align unrecognized direction" do
+    text = "the madness of men"
+    alignment = Verse::Alignment.new(text)
+    expect {
+      alignment.align(22, :unknown)
+    }.to raise_error(ArgumentError, /Unknown alignment/)
+  end
+
   it "centers line" do
     text = "the madness of men"
     alignment = Verse::Alignment.new(text)

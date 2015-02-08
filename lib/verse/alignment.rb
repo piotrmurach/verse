@@ -44,6 +44,15 @@ module Verse
       align(width, :right, options)
     end
 
+    # Align a text to a given direction with the width
+    #
+    # @see Verse::Alignment#align
+    #
+    # @api public
+    def self.align(text, width, direction, options)
+      new(text, options).align(width, direction, options)
+    end
+
     # Aligns text within the width.
     #
     # If the text is greater than the width then unmodified
@@ -63,6 +72,8 @@ module Verse
     #
     # @api public
     def align(width, direction = :left, options = {})
+      return text unless width
+
       filler = options.fetch(:fill) { fill }
       method = convert_to_method(direction)
       process_lines { |line| line.send(method, width, filler) }
@@ -72,9 +83,9 @@ module Verse
 
     # @api private
     def convert_to_method(direction)
-      case direction
-      when :left then :ljust
-      when :right then :rjust
+      case direction.to_sym
+      when :left   then :ljust
+      when :right  then :rjust
       when :center then :center
       else
         fail ArgumentError, "Unknown alignment `#{direction}`."

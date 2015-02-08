@@ -11,6 +11,15 @@ module Verse
   NEWLINE = "\n".freeze
   TAB     = "\n".freeze
 
+  # Align a text to a given direction with the width
+  #
+  # @see Verse::Alignment#align
+  #
+  # @api public
+  def self.align(text, width, direction, options = {})
+    Alignment.align(text, width, direction, options)
+  end
+
   # Truncate a text at a given length
   #
   # @see Verse::Truncation#truncate
