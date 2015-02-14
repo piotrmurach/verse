@@ -63,16 +63,41 @@ module Verse
       trail = options.fetch(:trailing) { trailing }
       separation = options.fetch(:separator) { separator }
 
-      chars = @sanitizer.sanitize(text).chars.to_a
-      return chars.join if chars.length <= truncate_at
-      length_without_trailing = truncate_at - trail.chars.to_a.size
+      sanitized_text = @sanitizer.sanitize(text)
+      width = display_width(sanitized_text)
+      chars = Unicode.text_elements(sanitized_text)
+      return chars.join if width <= truncate_at
+      length_without_trailing = truncate_at - display_width(trail)
       stop = chars[0, length_without_trailing].rindex(separation)
-
-      chars[0, stop || length_without_trailing].join + trail
+      sliced_chars = chars[0, stop || length_without_trailing]
+      shorten(sliced_chars, length_without_trailing).join + trail
     end
 
     protected
 
     attr_reader :text
+
+    # Perform actual shortening of the text
+    #
+    # @return [String]
+    #
+    # @api private
+    def shorten(chars, length_without_trailing)
+      truncated = []
+      char_width = display_width(chars[0])
+      while length_without_trailing - char_width > 0
+        char = chars.shift
+        break unless char
+        truncated << char
+        char_width = display_width(char)
+        length_without_trailing -= char_width
+      end
+      truncated
+    end
+
+    # @api private
+    def display_width(string)
+      Unicode.width(string)
+    end
   end # Truncation
 end # Verse

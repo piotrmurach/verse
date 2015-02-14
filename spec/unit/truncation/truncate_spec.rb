@@ -23,7 +23,7 @@ RSpec.describe Verse::Truncation, '.truncate' do
   it 'truncates text' do
     truncation = Verse::Truncation.new(text)
     trailing = '…'
-    expect(truncation.truncate(12)).to eq("ラドクリフ、マラソン五#{trailing}")
+    expect(truncation.truncate(12)).to eq("ラドクリフ#{trailing}")
   end
 
   it "doesn't truncate text when length exceeds content" do
@@ -34,19 +34,19 @@ RSpec.describe Verse::Truncation, '.truncate' do
   it 'truncates text with string separator' do
     truncation = Verse::Truncation.new(text)
     trailing = '…'
-    expect(truncation.truncate(12, separator: ' ')).to eq("ラドクリフ、マラソン五#{trailing}")
+    expect(truncation.truncate(12, separator: '')).to eq("ラドクリフ#{trailing}")
   end
 
   it 'truncates text with regex separator' do
     truncation = Verse::Truncation.new(text)
     trailing = '…'
-    expect(truncation.truncate(12, separator: /\s/)).to eq("ラドクリフ、マラソン五#{trailing}")
+    expect(truncation.truncate(12, separator: /\s/)).to eq("ラドクリフ#{trailing}")
   end
 
   it 'truncates text with custom trailing' do
     truncation = Verse::Truncation.new(text)
     trailing = '... (see more)'
-    expect(truncation.truncate(20, trailing: trailing)).to eq("ラドクリフ、#{trailing}")
+    expect(truncation.truncate(20, trailing: trailing)).to eq("ラド#{trailing}")
   end
 
   it 'correctly truncates with ANSI characters' do
