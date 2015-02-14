@@ -18,5 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'unicode',     '~> 0.4.4'
+
   spec.add_development_dependency 'bundler', '~> 1.5'
 end
