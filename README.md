@@ -16,6 +16,7 @@
 ## Features
 
 * No monkey-patching String class
+* Supports UTF-8 strings
 
 ## Installation
 
@@ -36,6 +37,13 @@ Or install it yourself as:
 ```bash
 $ gem install verse
 ```
+
+## Contents
+
+* [1. Usage](#1-usage)
+  * [1.1 align](#11-align)
+  * [1.2 truncate](#12-truncate)
+  * [1.3 wrap](#13-wrap)
 
 ## 1 Usage
 
@@ -60,6 +68,21 @@ alignemnt.right(40) # =>
     "           outdone by the madness of men"
 ```
 
+Aligning `UTF-8` text is also supported:
+
+```ruby
+alignment = Verse::Alignment.new "ラドクリフ\n" +
+                                 "、マラソン五輪\n" +
+                                 "代表に1万m出\n" +
+                                 "場にも含み"
+
+alignment.center(20) # =>
+    "     ラドクリフ     \n" +
+    "   、マラソン五輪   \n" +
+    "    代表に1万m出    \n" +
+    "     場にも含み     "
+```
+
 ### 1.2 truncate
 
 Using **Verse** you can truncate a given text:
@@ -74,6 +97,13 @@ Then to shorten the text to given length call `truncate`:
 
 ```ruby
 truncation.truncate(20) # => "for there is no fol…"
+```
+
+You can also specify `UTF-8` text as well:
+
+```ruby
+truncation = Verse::Truncation.new 'ラドクリフ、マラソン五輪代表に1万m出場にも含み'
+truncation.truncate(12)   # => "ラドクリフ…"
 ```
 
 ### 1.3 wrap
