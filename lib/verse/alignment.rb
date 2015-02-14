@@ -76,7 +76,7 @@ module Verse
 
       filler = options.fetch(:fill) { fill }
       method = convert_to_method(direction)
-      process_lines { |line| line.send(method, width, filler) }
+      process_lines { |line| send(method, line, width, filler) }
     end
 
     protected
@@ -84,9 +84,9 @@ module Verse
     # @api private
     def convert_to_method(direction)
       case direction.to_sym
-      when :left   then :ljust
-      when :right  then :rjust
-      when :center then :center
+      when :left   then :left_justify
+      when :right  then :right_justify
+      when :center then :center_justify
       else
         fail ArgumentError, "Unknown alignment `#{direction}`."
       end
@@ -98,6 +98,39 @@ module Verse
       lines.reduce([]) do |aligned, line|
         aligned << yield(line.strip)
       end.join("\n")
+    end
+
+    # @api private
+    def left_justify(text, width, filler)
+      width_diff = width - Unicode.width(text)
+      if width_diff > 0
+        text + filler * width_diff
+      else
+        text
+      end
+    end
+
+    # @api private
+    def right_justify(text, width, filler)
+      width_diff = width - Unicode.width(text)
+      if width_diff > 0
+        filler * width_diff + text
+      else
+        text
+      end
+    end
+
+    # @api private
+    def center_justify(text, width, filler)
+      text_width = Unicode.width(text)
+      width_diff = width - text_width
+      if width_diff > 0
+        right_count = (width_diff.to_f / 2).ceil
+        left_count  =  width_diff - right_count
+        [filler * left_count, text, filler * right_count].join
+      else
+        text
+      end
     end
 
     attr_reader :text

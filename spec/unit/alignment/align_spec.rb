@@ -18,6 +18,12 @@ RSpec.describe Verse::Alignment, '.align' do
     expect(alignment.center(22)).to eq("  the madness of men  ")
   end
 
+  it "centers utf line" do
+    text = "こんにちは"
+    alignment = Verse::Alignment.new(text)
+    expect(alignment.center(20)).to eq("     こんにちは     ")
+  end
+
   it "centers multiline text" do
     text = "for there is no folly of the beast\n of the earth which\n is not infinitely\n outdone by the madness of men"
     alignment = Verse::Alignment.new(text)
@@ -26,6 +32,17 @@ RSpec.describe Verse::Alignment, '.align' do
      "           of the earth which           \n",
      "           is not infinitely            \n",
      "     outdone by the madness of men      "
+    ].join)
+  end
+
+  it "centers multiline utf text" do
+    text = "ラドクリフ\n、マラソン五輪\n代表に1万m出\n場にも含み"
+    alignment = Verse::Alignment.new(text)
+    expect(alignment.center(20)).to eq([
+      "     ラドクリフ     \n",
+      "   、マラソン五輪   \n",
+      "    代表に1万m出    \n",
+      "     場にも含み     "
     ].join)
   end
 
