@@ -16,8 +16,8 @@
 ## Features
 
 * No monkey-patching String class
-* Support multibyte character encodings such as UTF-8, EUC-JP
-* Handling of languages without whitespaces between words (like Chinese and Japanese)
+* Supports multibyte character encodings such as UTF-8, EUC-JP
+* Handles languages without whitespaces between words (like Chinese and Japanese)
 
 ## Installation
 
