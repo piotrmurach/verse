@@ -14,6 +14,9 @@ module Verse
   NEWLINE = "\n".freeze
   TAB     = "\n".freeze
 
+  SPACE_RE   = %r{\s+}mo.freeze
+  NEWLINE_RE = %r{\n}o.freeze
+
   # Align a text to a given direction with the width
   #
   # @see Verse::Alignment#align

@@ -5,24 +5,17 @@ module Verse
   class Wrapping
     DEFAULT_WIDTH = 80.freeze
 
-    attr_reader :indent
-
-    attr_reader :padding
-
     # Initialize a Wrapping
     #
     # @param [String] text
     #   the text to be wrapped
     #
     # @param [Hash] options
-    #   @option options [Symbol] :indent the indentation
     #   @option options [Symbol] :padding the desired spacing
     #
     # @api public
     def initialize(text, options = {})
       @text    = text
-      @indent  = options.fetch(:indent) { 0 }
-      @padding = options.fetch(:padding) { [] }
       @line_width = options.fetch(:line_width) { DEFAULT_WIDTH }
       @sanitizer = Sanitizer.new
     end
@@ -31,7 +24,7 @@ module Verse
     #
     # @api public
     def self.wrap(text, wrap_at, options = {})
-      new(text, options).wrap(wrap_at, options)
+      new(text, options).wrap(wrap_at)
     end
 
     # Wrap a text into lines no longer than wrap_at length.
@@ -41,85 +34,92 @@ module Verse
     #   wrapping = Verse::Wrapping.new "Some longish text"
     #
     #   wrapping.wrap(8)
-    #   # => "Some\nlongish\ntext"
-    #
-    #   wrapping.wrap(8, indent: 4)
-    #   # => >    Some
-    #        >    longish
-    #        >    text
+    #   # => >Some
+    #        >longish
+    #        >text
     #
     # @api public
-    def wrap(wrap_at = DEFAULT_WIDTH, options = {})
+    def wrap(wrap_at = DEFAULT_WIDTH)
       if text.length < wrap_at.to_i || wrap_at.to_i.zero?
-        return text.dup
+        return text
       end
-
-      indentation = options.fetch(:indent) { indent }
-      spacing     = options.fetch(:padding) { padding }
-
-      text.split(NEWLINE, -1).map do |line|
-        pad_line(indent_line(wrap_line(line, wrap_at), indentation), spacing)
+      text.split(NEWLINE, -1).map do |paragraph|
+        format_paragraph(paragraph, wrap_at)
       end * NEWLINE
     end
 
-    private
-
-    # Calculate string length without color escapes
+    # Format paragraph to be maximum of wrap_at length
     #
-    # @param [String] string
+    # @param [String] paragraph
+    #   the paragraph to format
+    # @param [Integer] wrap_at
+    #   the maximum length to wrap the paragraph
     #
-    # @api private
-    def actual_length(string, at)
-      at + (string.length - @sanitizer.sanitize(string).length)
-    end
-
-    # Wrap line at given length
-    #
-    # @param [String] line
-    #
-    # @return [String]
+    # @return [Array[String]]
+    #   the wrapped lines
     #
     # @api private
-    def wrap_line(line, at)
-      wrap_at = actual_length(line, at)
-      line.strip.gsub(/\n/, ' ').squeeze(' ')
-        .gsub(/(.{1,#{wrap_at}})(?:\s+|$\n?)|(.{1,#{wrap_at}})/, "\\1\\2\n")
-        .strip
-    end
+    def format_paragraph(paragraph, wrap_at)
+      cleared_para = paragraph.strip.gsub(NEWLINE_RE, SPACE).squeeze(SPACE)
+      lines = []
+      line = ''
+      word  = ''
+      word_length = 0
+      line_length = 0
+      char_length = 0 # visible char length
+      text_length = display_width(cleared_para)
+      total_length = 0
+      UnicodeUtils.each_grapheme(cleared_para) do |char|
+        char_length = display_width(char)
+        total_length += char_length
+        if line_length + word_length + char_length <= wrap_at
+          if SPACE_RE =~ char || total_length == text_length
+            line << word + char
+            line_length += word_length + char_length
+            word = ''
+            word_length = 0
+          else
+            word << char
+            word_length += char_length
+          end
+          next
+        end
 
-    # Indent string by given value
-    #
-    # @param [String] text
-    #
-    # @return [String]
-    #
-    # @api private
-    def indent_line(text, indent)
-      text.split(NEWLINE).each do |line|
-        line.insert(0, SPACE * indent)
+        if SPACE_RE =~ char # ends with space
+          lines << line.strip
+          line = ''
+          line_length = 0
+          word = ''
+          word_length = 0
+        elsif word_length + char_length <= wrap_at
+          lines << line.strip
+          line = word + char
+          line_length = word_length + char_length
+          word = ''
+          word_length = 0
+        else # hyphenate word - too long to fit a line
+          lines << word.strip
+          line_length = 0
+          word = char
+          word_length = char_length
+        end
       end
-    end
-
-    # Add padding to each line in wrapped text
-    #
-    # @param [String] text
-    #   the wrapped text
-    #
-    # @return [String]
-    #
-    # @api private
-    def pad_line(text, padding)
-      return text if text.empty? || padding.empty?
-
-      padding_left  = SPACE * padding[3].to_i
-      padding_right = SPACE * padding[1].to_i
-      text.map! do |part|
-        part.insert(0, padding_left).insert(-1, padding_right)
-      end
+      lines << line.strip unless line.empty?
+      lines
     end
 
     protected
 
+    # The text to wrap
+    #
+    # @api private
     attr_reader :text
+
+    # Visible width of string
+    #
+    # @api private
+    def display_width(string)
+      UnicodeUtils.display_width(string)
+    end
   end # Wrapping
 end # Verse
