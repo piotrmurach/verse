@@ -17,13 +17,19 @@ RSpec.describe Verse::Truncation, '.truncate' do
 
   it "doesn't change text for equal length" do
     truncation = Verse::Truncation.new(text)
-    expect(truncation.truncate(text.length)).to eq(text)
+    expect(truncation.truncate(text.length * 2)).to eq(text)
   end
 
   it 'truncates text' do
     truncation = Verse::Truncation.new(text)
     trailing = '…'
     expect(truncation.truncate(12)).to eq("ラドクリフ#{trailing}")
+  end
+
+  it "estimates total width correctly " do
+    truncation = Verse::Truncation.new('太丸ゴシック体')
+    trailing = '…'
+    expect(truncation.truncate(8)).to eq("太丸ゴ#{trailing}")
   end
 
   it "doesn't truncate text when length exceeds content" do

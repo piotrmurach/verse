@@ -57,7 +57,7 @@ module Verse
     #
     # @api public
     def truncate(truncate_at = DEFAULT_LENGTH, options = {})
-      if text.length <= truncate_at.to_i || truncate_at.to_i.zero?
+      if display_width(text) <= truncate_at.to_i || truncate_at.to_i.zero?
         return text.dup
       end
       trail          = options.fetch(:trailing) { trailing }
