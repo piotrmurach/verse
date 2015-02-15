@@ -9,6 +9,11 @@ RSpec.describe Verse::Alignment, '.right' do
     expect(alignment.right(22)).to eq("    the madness of men")
   end
 
+  it "fills empty" do
+    alignment = Verse::Alignment.new('')
+    expect(alignment.left(22)).to eq("                      ")
+  end
+
   it "right justifies utf line" do
     text = "こんにちは"
     alignment = Verse::Alignment.new(text)
@@ -38,7 +43,7 @@ RSpec.describe Verse::Alignment, '.right' do
   end
 
   it "centers multiline text with fill of '*'" do
-    text = "for there is no folly of the beast\n of the earth which\n is not infinitely\n outdone by the madness of men"
+    text = "for there is no folly of the beast\nof the earth which\nis not infinitely\noutdone by the madness of men"
     alignment = Verse::Alignment.new(text, fill: '*')
     expect(alignment.right(40)).to eq([
      "******for there is no folly of the beast\n",

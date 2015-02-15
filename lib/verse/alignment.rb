@@ -95,8 +95,9 @@ module Verse
     # @api private
     def process_lines
       lines = text.split(NEWLINE)
+      return yield(text) if text.empty?
       lines.reduce([]) do |aligned, line|
-        aligned << yield(line.strip)
+        aligned << yield(line)
       end.join("\n")
     end
 

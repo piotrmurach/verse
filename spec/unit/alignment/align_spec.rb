@@ -12,6 +12,11 @@ RSpec.describe Verse::Alignment, '.align' do
     }.to raise_error(ArgumentError, /Unknown alignment/)
   end
 
+  it "fills empty" do
+    alignment = Verse::Alignment.new('')
+    expect(alignment.center(22)).to eq("                      ")
+  end
+
   it "centers line" do
     text = "the madness of men"
     alignment = Verse::Alignment.new(text)
@@ -25,7 +30,7 @@ RSpec.describe Verse::Alignment, '.align' do
   end
 
   it "centers multiline text" do
-    text = "for there is no folly of the beast\n of the earth which\n is not infinitely\n outdone by the madness of men"
+    text = "for there is no folly of the beast\nof the earth which\nis not infinitely\noutdone by the madness of men"
     alignment = Verse::Alignment.new(text)
     expect(alignment.center(40)).to eq([
      "   for there is no folly of the beast   \n",
@@ -47,7 +52,7 @@ RSpec.describe Verse::Alignment, '.align' do
   end
 
   it "centers multiline text with fill of '*'" do
-    text = "for there is no folly of the beast\n of the earth which\n is not infinitely\n outdone by the madness of men"
+    text = "for there is no folly of the beast\nof the earth which\nis not infinitely\noutdone by the madness of men"
     alignment = Verse::Alignment.new(text, fill: '*')
     expect(alignment.center(40)).to eq([
      "***for there is no folly of the beast***\n",
