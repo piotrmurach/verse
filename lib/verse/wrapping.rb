@@ -105,6 +105,7 @@ module Verse
         end
       end
       lines << line.strip unless line.empty?
+      lines << word unless word.empty?
       lines
     end
 

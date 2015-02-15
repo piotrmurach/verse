@@ -21,6 +21,15 @@ RSpec.describe Verse::Wrapping, '.wrap' do
       expect(wrapping.wrap(100)).to eq(text)
     end
 
+    it "wraps correctly unbreakable words" do
+      wrapping = Verse::Wrapping.new('foobar1')
+      expect(wrapping.wrap(3)).to eq([
+        "foo",
+        "bar",
+        "1"
+      ].join("\n"))
+    end
+
     it "wraps ascii text" do
       text = "for there is no folly of the beast of the earth which is not infinitely outdone by the madness of men "
       wrapping = Verse::Wrapping.new(text)
