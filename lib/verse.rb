@@ -1,6 +1,7 @@
 # coding: utf-8
 
-require 'unicode'
+require 'unicode_utils/display_width'
+require 'unicode_utils/each_grapheme'
 
 require 'verse/alignment'
 require 'verse/sanitizer'
