@@ -102,7 +102,7 @@ module Verse
 
     # @api private
     def left_justify(text, width, filler)
-      width_diff = width - Unicode.width(text)
+      width_diff = width - UnicodeUtils.display_width(text)
       if width_diff > 0
         text + filler * width_diff
       else
@@ -112,7 +112,7 @@ module Verse
 
     # @api private
     def right_justify(text, width, filler)
-      width_diff = width - Unicode.width(text)
+      width_diff = width - UnicodeUtils.display_width(text)
       if width_diff > 0
         filler * width_diff + text
       else
@@ -122,7 +122,7 @@ module Verse
 
     # @api private
     def center_justify(text, width, filler)
-      text_width = Unicode.width(text)
+      text_width = UnicodeUtils.display_width(text)
       width_diff = width - text_width
       if width_diff > 0
         right_count = (width_diff.to_f / 2).ceil

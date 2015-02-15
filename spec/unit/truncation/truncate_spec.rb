@@ -52,7 +52,7 @@ RSpec.describe Verse::Truncation, '.truncate' do
   it 'correctly truncates with ANSI characters' do
     text = "This is a \e[1m\e[34mbold blue text\e[0m"
     truncation = Verse::Truncation.new(text)
-    expect(truncation.truncate).to eq 'This is a bold blue text'
+    expect(truncation.truncate).to eq(text)
   end
 
   it "finishes on word boundary" do

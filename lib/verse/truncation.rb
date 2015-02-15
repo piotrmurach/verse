@@ -60,15 +60,16 @@ module Verse
       if text.length <= truncate_at.to_i || truncate_at.to_i.zero?
         return text.dup
       end
-      trail = options.fetch(:trailing) { trailing }
-      separation = options.fetch(:separator) { separator }
-
+      trail          = options.fetch(:trailing) { trailing }
+      separation     = options.fetch(:separator) { separator }
       sanitized_text = @sanitizer.sanitize(text)
-      width = display_width(sanitized_text)
-      chars = Unicode.text_elements(sanitized_text)
-      return chars.join if width <= truncate_at
+      width          = display_width(sanitized_text)
+
+      return text if width <= truncate_at
+
       length_without_trailing = truncate_at - display_width(trail)
-      stop = chars[0, length_without_trailing].rindex(separation)
+      chars = UnicodeUtils.each_grapheme(sanitized_text).to_a
+      stop  = chars[0, length_without_trailing].rindex(separation)
       sliced_chars = chars[0, stop || length_without_trailing]
       shorten(sliced_chars, length_without_trailing).join + trail
     end
@@ -97,7 +98,7 @@ module Verse
 
     # @api private
     def display_width(string)
-      Unicode.width(string)
+      UnicodeUtils.display_width(string)
     end
   end # Truncation
 end # Verse
