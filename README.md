@@ -16,7 +16,8 @@
 ## Features
 
 * No monkey-patching String class
-* Supports UTF-8 strings
+* Support multibyte character encodings such as UTF-8, EUC-JP
+* Handling of languages without whitespaces between words (like Chinese and Japanese)
 
 ## Installation
 
@@ -41,15 +42,15 @@ $ gem install verse
 ## Contents
 
 * [1. Usage](#1-usage)
-  * [1.1 align](#11-align)
-  * [1.2 truncate](#12-truncate)
-  * [1.3 wrap](#13-wrap)
+  * [1.1 Align](#11-align)
+  * [1.2 Truncate](#12-truncate)
+  * [1.3 Wrap](#13-wrap)
 
 ## 1 Usage
 
-### 1.1 align
+### 1.1 Align
 
-**Verse** allows you to align text:
+**Verse::Alignment** allows you to align text within a given length:
 
 ```ruby
 alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
@@ -58,10 +59,10 @@ alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
                                  " outdone by the madness of men"
 ```
 
-Then using `right`, `left` or `center` methods and passing width you can align the text:
+Then using direction out of `:right`, `:left` or `:center` methods and passing width you can align the text:
 
 ```ruby
-alignemnt.right(40) # =>
+alignemnt.align(40, :right) # =>
     "      for there is no folly of the beast\n" +
     "                      of the earth which\n" +
     "                       is not infinitely\n" +
@@ -83,9 +84,9 @@ alignment.center(20) # =>
     "     場にも含み     "
 ```
 
-### 1.2 truncate
+### 1.2 Truncate
 
-Using **Verse** you can truncate a given text:
+Using **Verse::Truncation** you can truncate a given text after a given length.
 
 ```ruby
 truncation = Verse::Truncation.new "for there is no folly of the beast of the earth " +
@@ -99,6 +100,13 @@ Then to shorten the text to given length call `truncate`:
 truncation.truncate(20) # => "for there is no fol…"
 ```
 
+Pass in `:trailing` (by default `…`) to replace last characters:
+
+```ruby
+truncation.truncate(22, trailing: '... (see more)')
+# => "for there...(see more)"
+```
+
 You can also specify `UTF-8` text as well:
 
 ```ruby
@@ -106,7 +114,9 @@ truncation = Verse::Truncation.new 'ラドクリフ、マラソン五輪代表�
 truncation.truncate(12)   # => "ラドクリフ…"
 ```
 
-### 1.3 wrap
+### 1.3 Wrap
+
+**Verse::Wrapping** allows you to wrap text into lines no longer than `wrap_at` argument length. The `wrap` method will break either on whitespace character or in case of east Asian characters on character boundaries.
 
 ```ruby
 wrapping = Verse::Wrapping.new "Think not, is my eleventh commandment; " +
@@ -114,13 +124,32 @@ wrapping = Verse::Wrapping.new "Think not, is my eleventh commandment; " +
 
 ```
 
-Then to wrap the text to given length call `wrap`:
+Then to wrap the text to given length do:
 
 ```ruby
-wrapping.wrap(30)
-# => "Think not, is my eleventh"
-     "commandment; and sleep when"
-     "you can, is my twelfth."
+wrapping.wrap(30) # =>
+  "Think not, is my eleventh"
+  "commandment; and sleep when"
+  "you can, is my twelfth."
+```
+
+Similarly, to handle `UTF-8` text do:
+
+```ruby
+wrapping = Verse::Wrapping.new "ラドクリフ、マラソン五輪代表に1万m出場にも含み"
+wrapping.wrap(8)  # =>
+  "ラドクリ"
+  "フ、マラ"
+  "ソン五輪"
+  "代表に1"
+  "万m出場"
+  "にも含み"
+```
+
+You can also call `wrap` directly on **Verse**:
+
+```ruby
+Verse.wrap(text, wrap_at)
 ```
 
 ## Contributing
