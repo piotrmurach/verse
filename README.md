@@ -44,9 +44,10 @@ $ gem install verse
 
 * [1. Usage](#1-usage)
   * [1.1 Align](#11-align)
-  * [1.2 Replace](#12-replace)
-  * [1.3 Truncate](#13-truncate)
-  * [1.4 Wrap](#14-wrap)
+  * [1.2 Pad](#12-pad)
+  * [1.3 Replace](#13-replace)
+  * [1.4 Truncate](#14-truncate)
+  * [1.5 Wrap](#15-wrap)
 
 ## 1 Usage
 
@@ -86,7 +87,58 @@ alignment.center(20) # =>
     "     場にも含み     "
 ```
 
-### 1.2 Replace
+### 1.2 Pad
+
+**Verse::Padding** provides facility to pad around text with a given padding.
+
+The padding value needs to be one of the following values corresponding with CSS padding property:
+
+```ruby
+[1,1,1,1]  # => pad text left & right with 1 character and add 1 line above & below
+[1,1]      # => as above
+1          # => as above
+```
+
+You can pad around a single line of text with `pad` method like so:
+
+```ruby
+padding = Verse::Padding.new("Ignorance is the parent of fear.")
+
+padding.pad([1,1,1,1]) # =>
+  "                                  \n" +
+  " Ignorance is the parent of fear. \n" +
+  "                                  "
+```
+
+In addition, you can `pad` multiline content:
+
+```ruby
+padding = Verse::Padding.new "It is the easiest thing\n" +
+                             "in the world for a man\n" +
+                             "to look as if he had \n" +
+                             "a great secret in him."
+
+padding.pad([1,1,1,1]) # =>
+  "                         \n" +
+  " It is the easiest thing \n" +
+  " in the world for a man \n" +
+  " to look as if he had  \n" +
+  " a great secret in him. \n" +
+  "                         "
+```
+
+You can also specify `UTF-8` text as well:
+
+```ruby
+padding = Verse::Padding.new "ラドクリフ、マラソン"
+
+padding.pad([1,1,1,1]) # =>
+  "                      \n" +
+  " ラドクリフ、マラソン \n" +
+  "                      "
+```
+
+### 1.3 Replace
 
 **Verse::Sanitizer** provides ability to sanitize text with unwanted characters. Given a text with line break characters, `replace` will remove or substitute all occurances of line breaks depending on surrounding context.
 
@@ -96,7 +148,7 @@ sanitizer.replace("It is not down on any map;\r\n true places never are.")
 # => "It is not down on any map; true places never are."
 ```
 
-### 1.3 Truncate
+### 1.4 Truncate
 
 Using **Verse::Truncation** you can truncate a given text after a given length.
 
@@ -126,7 +178,7 @@ truncation = Verse::Truncation.new 'ラドクリフ、マラソン五輪代表�
 truncation.truncate(12)   # => "ラドクリフ…"
 ```
 
-### 1.4 Wrap
+### 1.5 Wrap
 
 **Verse::Wrapping** allows you to wrap text into lines no longer than `wrap_at` argument length. The `wrap` method will break either on whitespace character or in case of east Asian characters on character boundaries.
 
