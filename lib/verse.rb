@@ -5,6 +5,7 @@ require 'unicode_utils/each_grapheme'
 
 require 'verse/alignment'
 require 'verse/padder'
+require 'verse/padding'
 require 'verse/sanitizer'
 require 'verse/truncation'
 require 'verse/wrapping'
