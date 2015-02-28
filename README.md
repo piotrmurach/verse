@@ -88,7 +88,7 @@ alignment.center(20) # =>
 
 ### 1.2 Replace
 
-**Verse::Sanitizer** provides ability to sanitize text of unwanted characters. Given a text with line break characters, `replace` will remove or substitute all occurance of line breaks depending on surrounding contenxt.
+**Verse::Sanitizer** provides ability to sanitize text with unwanted characters. Given a text with line break characters, `replace` will remove or substitute all occurances of line breaks depending on surrounding context.
 
 ```ruby
 sanitizer = Verse::Sanitizer.new
