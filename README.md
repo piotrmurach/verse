@@ -16,6 +16,7 @@
 ## Features
 
 * No monkey-patching String class
+* Simple API that can be easily wrapped by other objects
 * Supports multibyte character encodings such as UTF-8, EUC-JP
 * Handles languages without whitespaces between words (like Chinese and Japanese)
 
@@ -43,8 +44,9 @@ $ gem install verse
 
 * [1. Usage](#1-usage)
   * [1.1 Align](#11-align)
-  * [1.2 Truncate](#12-truncate)
-  * [1.3 Wrap](#13-wrap)
+  * [1.2 Replace](#12-replace)
+  * [1.3 Truncate](#13-truncate)
+  * [1.4 Wrap](#14-wrap)
 
 ## 1 Usage
 
@@ -84,7 +86,17 @@ alignment.center(20) # =>
     "     場にも含み     "
 ```
 
-### 1.2 Truncate
+### 1.2 Replace
+
+**Verse::Sanitizer** provides ability to sanitize text of unwanted characters. Given a text with line break characters, `replace` will remove or substitute all occurance of line breaks depending on surrounding contenxt.
+
+```ruby
+sanitizer = Verse::Sanitizer.new
+sanitizer.replace("It is not down on any map;\r\n true places never are.")
+# => "It is not down on any map; true places never are."
+```
+
+### 1.3 Truncate
 
 Using **Verse::Truncation** you can truncate a given text after a given length.
 
@@ -114,7 +126,7 @@ truncation = Verse::Truncation.new 'ラドクリフ、マラソン五輪代表�
 truncation.truncate(12)   # => "ラドクリフ…"
 ```
 
-### 1.3 Wrap
+### 1.4 Wrap
 
 **Verse::Wrapping** allows you to wrap text into lines no longer than `wrap_at` argument length. The `wrap` method will break either on whitespace character or in case of east Asian characters on character boundaries.
 
