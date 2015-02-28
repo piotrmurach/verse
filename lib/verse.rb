@@ -4,6 +4,7 @@ require 'unicode_utils/display_width'
 require 'unicode_utils/each_grapheme'
 
 require 'verse/alignment'
+require 'verse/padder'
 require 'verse/sanitizer'
 require 'verse/truncation'
 require 'verse/wrapping'
