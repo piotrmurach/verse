@@ -60,7 +60,7 @@ module Verse
     #
     # @api private
     def format_paragraph(paragraph, wrap_at)
-      cleared_para = paragraph.strip.gsub(NEWLINE_RE, SPACE).squeeze(SPACE)
+      cleared_para = @sanitizer.replace(paragraph)
       lines = []
       line = ''
       word  = ''
@@ -73,7 +73,7 @@ module Verse
         char_length = display_width(char)
         total_length += char_length
         if line_length + word_length + char_length <= wrap_at
-          if SPACE_RE =~ char || total_length == text_length
+          if char == SPACE || total_length == text_length
             line << word + char
             line_length += word_length + char_length
             word = ''
@@ -85,26 +85,26 @@ module Verse
           next
         end
 
-        if SPACE_RE =~ char # ends with space
-          lines << line.strip
+        if char == SPACE # ends with space
+          lines << line
           line = ''
           line_length = 0
-          word = ''
-          word_length = 0
+          word = word + char
+          word_length = word_length + char_length
         elsif word_length + char_length <= wrap_at
-          lines << line.strip
+          lines << line
           line = word + char
           line_length = word_length + char_length
           word = ''
           word_length = 0
         else # hyphenate word - too long to fit a line
-          lines << word.strip
+          lines << word
           line_length = 0
           word = char
           word_length = char_length
         end
       end
-      lines << line.strip unless line.empty?
+      lines << line unless line.empty?
       lines << word unless word.empty?
       lines
     end
