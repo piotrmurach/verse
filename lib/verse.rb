@@ -28,6 +28,15 @@ module Verse
     Alignment.align(text, width, direction, options)
   end
 
+  # Pad a text around with a given padding
+  #
+  # @see Verse::Padding#pad
+  #
+  # @api public
+  def self.pad(text, padding, options = {})
+    Padding.pad(text, padding, options)
+  end
+
   # Truncate a text at a given length
   #
   # @see Verse::Truncation#truncate
