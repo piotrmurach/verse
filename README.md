@@ -19,6 +19,7 @@
 * Simple API that can be easily wrapped by other objects
 * Supports multibyte character encodings such as UTF-8, EUC-JP
 * Handles languages without whitespaces between words (like Chinese and Japanese)
+* Supports ANSI escape codes
 
 ## Installation
 
@@ -85,6 +86,14 @@ alignment.center(20) # =>
     "   、マラソン五輪   \n" +
     "    代表に1万m出    \n" +
     "     場にも含み     "
+```
+
+**Verse::Alignment** works with ANSI escape codoes:
+
+```ruby
+alignment = Verse::Alignment.new "\e[32mthe madness of men\e[0m"
+alignment.align(22, :center)
+# => "  \e[32mthe madness of men\e[0m  "
 ```
 
 ### 1.2 Pad
@@ -176,6 +185,14 @@ You can also specify `UTF-8` text as well:
 ```ruby
 truncation = Verse::Truncation.new 'ラドクリフ、マラソン五輪代表に1万m出場にも含み'
 truncation.truncate(12)   # => "ラドクリフ…"
+```
+
+**Verse::Truncation** works with ANSI escape codoes:
+
+```ruby
+truncation = Verse::Trucnation.new "I try \e[34mall things\e[0m, I achieve what I can"
+truncation.truncate(18)
+# => "I try \e[34mall things\e[0m…"
 ```
 
 ### 1.5 Wrap
