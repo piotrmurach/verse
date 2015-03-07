@@ -12,8 +12,9 @@ module Verse
     #
     # @api public
     def initialize(text, options = {})
-      @text = text
-      @fill = options.fetch(:fill) { SPACE }
+      @text      = text
+      @sanitizer = Sanitizer.new
+      @fill      = options.fetch(:fill) { SPACE }
       @direction = options.fetch(:direction) { :left }
     end
 
@@ -103,7 +104,7 @@ module Verse
 
     # @api private
     def left_justify(text, width, filler)
-      width_diff = width - UnicodeUtils.display_width(text)
+      width_diff = width - actual_width(text)
       if width_diff > 0
         text + filler * width_diff
       else
@@ -113,7 +114,7 @@ module Verse
 
     # @api private
     def right_justify(text, width, filler)
-      width_diff = width - UnicodeUtils.display_width(text)
+      width_diff = width - actual_width(text)
       if width_diff > 0
         filler * width_diff + text
       else
@@ -123,7 +124,7 @@ module Verse
 
     # @api private
     def center_justify(text, width, filler)
-      text_width = UnicodeUtils.display_width(text)
+      text_width = actual_width(text)
       width_diff = width - text_width
       if width_diff > 0
         right_count = (width_diff.to_f / 2).ceil
@@ -132,6 +133,11 @@ module Verse
       else
         text
       end
+    end
+
+    # @api private
+    def actual_width(text)
+      UnicodeUtils.display_width(@sanitizer.sanitize(text))
     end
 
     attr_reader :text
