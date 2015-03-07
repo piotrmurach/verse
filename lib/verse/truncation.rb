@@ -22,7 +22,7 @@ module Verse
     #
     # @api public
     def initialize(text, options = {})
-      @text      = text
+      @text      = text.dup.freeze
       @sanitizer = Sanitizer.new
       @separator = options.fetch(:separator) { nil }
       @trailing  = options.fetch(:trailing) { DEFAULT_TRAILING }
@@ -60,18 +60,20 @@ module Verse
       if display_width(text) <= truncate_at.to_i || truncate_at.to_i.zero?
         return text.dup
       end
-      trail          = options.fetch(:trailing) { trailing }
-      separation     = options.fetch(:separator) { separator }
+      trail      = options.fetch(:trailing) { trailing }
+      separation = options.fetch(:separator) { separator }
+      width      = display_width(text)
       sanitized_text = @sanitizer.sanitize(text)
-      width          = display_width(sanitized_text)
 
       return text if width <= truncate_at
 
       length_without_trailing = truncate_at - display_width(trail)
-      chars = UnicodeUtils.each_grapheme(sanitized_text).to_a
+      chars = to_chars(sanitized_text).to_a
       stop  = chars[0, length_without_trailing].rindex(separation)
-      sliced_chars = chars[0, stop || length_without_trailing]
-      shorten(sliced_chars, length_without_trailing).join + trail
+      slice_length = stop || length_without_trailing
+      sliced_chars = chars[0, slice_length]
+      original_chars = to_chars(text).to_a[0, 3 * slice_length]
+      shorten(original_chars, sliced_chars, length_without_trailing).join + trail
     end
 
     protected
@@ -83,22 +85,34 @@ module Verse
     # @return [String]
     #
     # @api private
-    def shorten(chars, length_without_trailing)
+    def shorten(original_chars, chars, length_without_trailing)
       truncated = []
       char_width = display_width(chars[0])
       while length_without_trailing - char_width > 0
+        orig_char = original_chars.shift
         char = chars.shift
         break unless char
+        while orig_char != char # consume ansi
+          ansi = true
+          truncated << orig_char
+          orig_char = original_chars.shift
+        end
         truncated << char
         char_width = display_width(char)
         length_without_trailing -= char_width
       end
+      truncated << ["\e[0m"] if ansi
       truncated
     end
 
     # @api private
+    def to_chars(text)
+      UnicodeUtils.each_grapheme(text).to_a
+    end
+
+    # @api private
     def display_width(string)
-      UnicodeUtils.display_width(string)
+      UnicodeUtils.display_width(@sanitizer.sanitize(string))
     end
   end # Truncation
 end # Verse
