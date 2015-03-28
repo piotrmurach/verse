@@ -43,10 +43,18 @@ module Verse
       if text.length < wrap_at.to_i || wrap_at.to_i.zero?
         return text
       end
+      ansi_stack = []
       text.split(NEWLINE, -1).map do |paragraph|
-        format_paragraph(paragraph, wrap_at)
+        format_paragraph(paragraph, wrap_at, ansi_stack)
       end * NEWLINE
     end
+
+    protected
+
+    # The text to wrap
+    #
+    # @api private
+    attr_reader :text
 
     # Format paragraph to be maximum of wrap_at length
     #
@@ -59,7 +67,7 @@ module Verse
     #   the wrapped lines
     #
     # @api private
-    def format_paragraph(paragraph, wrap_at)
+    def format_paragraph(paragraph, wrap_at, ansi_stack)
       cleared_para = @sanitizer.replace(paragraph)
       lines = []
       line = ''
@@ -69,7 +77,25 @@ module Verse
       char_length = 0 # visible char length
       text_length = display_width(cleared_para)
       total_length = 0
+      ansi = ''
+      matched = nil
       UnicodeUtils.each_grapheme(cleared_para) do |char|
+        if char == ANSI # found ansi
+          ansi << char && next
+        end
+
+        if ansi.length > 0
+          ansi << char
+          if @sanitizer.ansi?(ansi) # we found ansi let's consume
+            matched = ansi
+          elsif matched
+            ansi_stack << [matched[0...-1], line_length + word_length]
+            matched = nil
+            ansi    = ''
+          end
+          next if ansi.length > 0
+        end
+
         char_length = display_width(char)
         total_length += char_length
         if line_length + word_length + char_length <= wrap_at
@@ -86,41 +112,72 @@ module Verse
         end
 
         if char == SPACE # ends with space
-          lines << line
+          lines << insert_ansi(ansi_stack, line)
           line = ''
           line_length = 0
-          word = word + char
-          word_length = word_length + char_length
+          word += char
+          word_length += char_length
         elsif word_length + char_length <= wrap_at
-          lines << line
+          lines << insert_ansi(ansi_stack, line)
           line = word + char
           line_length = word_length + char_length
           word = ''
           word_length = 0
         else # hyphenate word - too long to fit a line
-          lines << word
+          lines << insert_ansi(ansi_stack, word)
           line_length = 0
           word = char
           word_length = char_length
         end
       end
-      lines << line unless line.empty?
-      lines << word unless word.empty?
+      lines << insert_ansi(ansi_stack, line) unless line.empty?
+      lines << insert_ansi(ansi_stack, word) unless word.empty?
       lines
     end
 
-    protected
-
-    # The text to wrap
+    # Insert ANSI code into string
+    #
+    # Check if there are any ANSI states, if present
+    # insert ANSI codes at given positions unwinding the stack.
+    #
+    # @param [Array[Array[String, Integer]]] ansi_stack
+    #   the ANSI codes to apply
+    #
+    # @param [String] string
+    #   the string to insert ANSI codes into
+    #
+    # @return [String]
     #
     # @api private
-    attr_reader :text
+    def insert_ansi(ansi_stack, string)
+      return string if ansi_stack.empty?
+      to_remove = 0
+      reset_index = -1
+      output = string.dup
+      resetting = false
+      ansi_stack.reverse_each do |state|
+        if state[0] =~ /#{Regexp.quote(RESET)}/
+          resetting = true
+          reset_index = state[1]
+          to_remove += 2
+          next
+        elsif !resetting
+          reset_index = -1
+          resetting = false
+        end
+
+        color, color_index = *state
+        output.insert(reset_index, RESET).insert(color_index, color)
+      end
+      ansi_stack.pop(to_remove) # remove used states
+      output
+    end
 
     # Visible width of string
     #
     # @api private
     def display_width(string)
-      UnicodeUtils.display_width(string)
+      UnicodeUtils.display_width(@sanitizer.sanitize(string))
     end
   end # Wrapping
 end # Verse
