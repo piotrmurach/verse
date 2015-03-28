@@ -1,3 +1,11 @@
+0.4.0 (Mar 28, 2015)
+
+* Add Sanitizer#ansi? to check for ANSI codes
+* Change Alignment to work with ANSI codes
+* Change Truncation to work with ANSI codes
+* Change Wrapping to work with ANSI codes
+* Chnage Padding to work with ANSI codes
+
 0.3.0 (Feb 28, 2015)
 
 * Add Sanitizer#replace for substitutiong linebreaks
