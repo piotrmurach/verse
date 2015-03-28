@@ -227,6 +227,16 @@ wrapping.wrap(8)  # =>
   "にも含み"
 ```
 
+**Verse::Wrapping** knows how to handle ANSI codes:
+
+```ruby
+wrapping = Verse::Wrapping.new "\e[32;44mIgnorance is the parent of fear.\e[0m"
+wrapping.wrap(14) # =>
+  "\e[32;44mIgnorance is \e[0m"
+  "\e[32;44mthe parent of \e[0m"
+  "\e[32;44mfear.\e[0m"
+```
+
 You can also call `wrap` directly on **Verse**:
 
 ```ruby
