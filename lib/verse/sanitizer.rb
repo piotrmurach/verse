@@ -17,6 +17,18 @@ module Verse
       text.gsub(ANSI_MATCHER, '')
     end
 
+    # Check if string is an ANSI code
+    #
+    # @param [String] string
+    #   the string to check
+    #
+    # @return [Boolean]
+    #
+    # @api public
+    def ansi?(string)
+      !!(string =~ /^(\[)?\033(\[)?[;?\d]*[\dA-Za-z]([\];])?$/)
+    end
+
     # Replace separator with whitespace
     #
     # @example
