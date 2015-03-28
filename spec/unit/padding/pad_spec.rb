@@ -51,4 +51,17 @@ RSpec.describe Verse::Padding, '.pad' do
       "                         ",
     ].join("\n"))
   end
+
+  it "pads ANSI codes inside content" do
+    text = "It is \e[35mthe easiest\e[0m thing\nin the \e[34mworld\e[0m for a man\nto look as if he had \na great \e[33msecret\e[0m in him."
+    padding = Verse::Padding.new(text, padding: [1,1,1,1])
+    expect(padding.pad()).to eq([
+      "                         ",
+      " It is \e[35mthe easiest\e[0m thing ",
+      " in the \e[34mworld\e[0m for a man ",
+      " to look as if he had  ",
+      " a great \e[33msecret\e[0m in him. ",
+      "                         ",
+    ].join("\n"))
+  end
 end
