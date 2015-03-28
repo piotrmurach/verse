@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = [""]
   spec.summary       = %q{Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.}
   spec.description   = %q{Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/peter-murach/verse"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
