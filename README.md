@@ -66,7 +66,7 @@ alignment = Verse::Alignment.new "for there is no folly of the beast\n" +
 Then using direction out of `:right`, `:left` or `:center` methods and passing width you can align the text:
 
 ```ruby
-alignemnt.align(40, :right) # =>
+alignment.align(40, :right) # =>
     "      for there is no folly of the beast\n" +
     "                      of the earth which\n" +
     "                       is not infinitely\n" +
