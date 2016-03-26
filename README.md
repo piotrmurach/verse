@@ -1,15 +1,15 @@
 # Verse
 [![Gem Version](https://badge.fury.io/rb/verse.png)][gem]
-[![Build Status](https://secure.travis-ci.org/peter-murach/verse.png?branch=master)][travis]
-[![Code Climate](https://codeclimate.com/github/peter-murach/verse.png)][codeclimate]
-[![Coverage Status](https://coveralls.io/repos/peter-murach/verse/badge.png)][coverage]
-[![Inline docs](http://inch-ci.org/github/peter-murach/verse.png)][inchpages]
+[![Build Status](https://secure.travis-ci.org/piotrmurach/verse.png?branch=master)][travis]
+[![Code Climate](https://codeclimate.com/github/piotrmurach/verse.png)][codeclimate]
+[![Coverage Status](https://coveralls.io/repos/piotrmurach/verse/badge.png)][coverage]
+[![Inline docs](http://inch-ci.org/github/piotrmurach/verse.png)][inchpages]
 
 [gem]: http://badge.fury.io/rb/verse
-[travis]: http://travis-ci.org/peter-murach/verse
-[codeclimate]: https://codeclimate.com/github/peter-murach/verse
-[coverage]: https://coveralls.io/r/peter-murach/verse
-[inchpages]: http://inch-ci.org/github/peter-murach/verse
+[travis]: http://travis-ci.org/piotrmurach/verse
+[codeclimate]: https://codeclimate.com/github/piotrmurach/verse
+[coverage]: https://coveralls.io/r/piotrmurach/verse
+[inchpages]: http://inch-ci.org/github/piotrmurach/verse
 
 > Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.
 
@@ -245,7 +245,7 @@ Verse.wrap(text, wrap_at)
 
 ## Contributing
 
-1. Fork it ( https://github.com/peter-murach/verse/fork )
+1. Fork it ( https://github.com/piotrmurach/verse/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
