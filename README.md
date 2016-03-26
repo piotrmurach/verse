@@ -1,9 +1,9 @@
 # Verse
-[![Gem Version](https://badge.fury.io/rb/verse.png)][gem]
-[![Build Status](https://secure.travis-ci.org/piotrmurach/verse.png?branch=master)][travis]
-[![Code Climate](https://codeclimate.com/github/piotrmurach/verse.png)][codeclimate]
-[![Coverage Status](https://coveralls.io/repos/piotrmurach/verse/badge.png)][coverage]
-[![Inline docs](http://inch-ci.org/github/piotrmurach/verse.png)][inchpages]
+[![Gem Version](https://badge.fury.io/rb/verse.svg)][gem]
+[![Build Status](https://secure.travis-ci.org/piotrmurach/verse.svg?branch=master)][travis]
+[![Code Climate](https://codeclimate.com/github/piotrmurach/verse/badges/gpa.png)][codeclimate]
+[![Coverage Status](https://coveralls.io/repos/piotrmurach/verse/badge.svg)][coverage]
+[![Inline docs](http://inch-ci.org/github/piotrmurach/verse.svg)][inchpages]
 
 [gem]: http://badge.fury.io/rb/verse
 [travis]: http://travis-ci.org/piotrmurach/verse
