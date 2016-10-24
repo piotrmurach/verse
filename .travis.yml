@@ -6,22 +6,17 @@ language: ruby
 bundler_args: --without metrics
 script: "bundle exec rake ci"
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.0
   - 2.2.5
   - 2.3.1
+  - jruby-9.1.1.0
+  - rbx-2.11
+  - rbx-3.48
   - ruby-head
 matrix:
-  include:
-    - rvm: jruby-19mode
-    - rvm: jruby-20mode
-    - rvm: jruby-21mode
-    - rvm: jruby-head
-    - rvm: rbx-2
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-head
   fast_finish: true
 branches:
   only: master
