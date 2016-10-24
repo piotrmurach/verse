@@ -1,8 +1,8 @@
 # coding: utf-8
 
 module Verse
-  class Sanitizer
-    ANSI_MATCHER = /(\[)?\033(\[)?[;?\d]*[\dA-Za-z](\])?/.freeze
+  module Sanitizer
+    ANSI_MATCHER = /(\[)?\033(\[)?[;?\d]*[\dA-Za-z](\])?/
 
     LINE_BREAK = "(\r\n+|\r+|\n+|\t+)".freeze
 
@@ -16,6 +16,7 @@ module Verse
     def sanitize(text)
       text.gsub(ANSI_MATCHER, '')
     end
+    module_function :sanitize
 
     # Check if string is an ANSI code
     #
@@ -28,6 +29,7 @@ module Verse
     def ansi?(string)
       !!(string =~ /^(\[)?\033(\[)?[;?\d]*[\dA-Za-z]([\];])?$/)
     end
+    module_function :ansi?
 
     # Replace separator with whitespace
     #
@@ -43,9 +45,10 @@ module Verse
     #
     # @api public
     def replace(text, separator = LINE_BREAK)
-      text.gsub(/([ ]+)#{separator}/, "\\1").
-           gsub(/#{separator}(?<space>[ ]+)/, "\\k<space>").
-           gsub(/#{separator}/, ' ')
+      text.gsub(/([ ]+)#{separator}/, "\\1")
+          .gsub(/#{separator}(?<space>[ ]+)/, "\\k<space>")
+          .gsub(/#{separator}/, ' ')
     end
+    module_function :replace
   end # Sanitizer
 end # Verse

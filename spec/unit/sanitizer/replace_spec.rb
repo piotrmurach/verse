@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Verse::Sanitizer, '.replace' do
-  subject(:sanitizer) { described_class.new }
+  subject(:sanitizer) { described_class }
 
   {
     "  \n"      => '  ',

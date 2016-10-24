@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Verse::Sanitizer, '.sanitize' do
-  subject(:sanitizer) { described_class.new }
+  subject(:sanitizer) { described_class }
 
   {
     "\e[20h" => '',
