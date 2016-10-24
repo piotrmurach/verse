@@ -9,7 +9,6 @@ module Verse
     def initialize(text, options = {})
       @text      = text
       @padding   = Padder.parse(options[:padding])
-      @sanitizer = Sanitizer.new
     end
 
     # Pad content out
@@ -89,7 +88,7 @@ module Verse
     end
 
     def display_width(string)
-      Unicode::DisplayWidth.of(@sanitizer.sanitize(string))
+      Unicode::DisplayWidth.of(Sanitizer.sanitize(string))
     end
   end # Padding
 end # Verse

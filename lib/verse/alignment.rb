@@ -3,7 +3,6 @@
 module Verse
   # A class responsible for text alignment
   class Alignment
-
     attr_reader :fill
 
     attr_reader :direction
@@ -13,7 +12,6 @@ module Verse
     # @api public
     def initialize(text, options = {})
       @text      = text
-      @sanitizer = Sanitizer.new
       @fill      = options.fetch(:fill) { SPACE }
       @direction = options.fetch(:direction) { :left }
     end
@@ -89,7 +87,7 @@ module Verse
       when :right  then :right_justify
       when :center then :center_justify
       else
-        fail ArgumentError, "Unknown alignment `#{direction}`."
+        raise ArgumentError, "Unknown alignment `#{direction}`."
       end
     end
 
@@ -137,7 +135,7 @@ module Verse
 
     # @api private
     def actual_width(text)
-      Unicode::DisplayWidth.of(@sanitizer.sanitize(text))
+      Unicode::DisplayWidth.of(Sanitizer.sanitize(text))
     end
 
     attr_reader :text

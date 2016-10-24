@@ -3,7 +3,7 @@
 module Verse
   # A class responsible for text wrapping
   class Wrapping
-    DEFAULT_WIDTH = 80.freeze
+    DEFAULT_WIDTH = 80
 
     # Initialize a Wrapping
     #
@@ -15,9 +15,8 @@ module Verse
     #
     # @api public
     def initialize(text, options = {})
-      @text    = text
+      @text       = text
       @line_width = options.fetch(:line_width) { DEFAULT_WIDTH }
-      @sanitizer = Sanitizer.new
     end
 
     # Wrap a text into lines no longer than wrap_at
@@ -68,10 +67,10 @@ module Verse
     #
     # @api private
     def format_paragraph(paragraph, wrap_at, ansi_stack)
-      cleared_para = @sanitizer.replace(paragraph)
+      cleared_para = Sanitizer.replace(paragraph)
       lines = []
       line = ''
-      word  = ''
+      word = ''
       word_length = 0
       line_length = 0
       char_length = 0 # visible char length
@@ -79,14 +78,14 @@ module Verse
       total_length = 0
       ansi = ''
       matched = nil
-      UnicodeUtils.each_grapheme(cleared_para) do |char|
+      to_chars(cleared_para) do |char|
         if char == ANSI # found ansi
           ansi << char && next
         end
 
         if ansi.length > 0
           ansi << char
-          if @sanitizer.ansi?(ansi) # we found ansi let's consume
+          if Sanitizer.ansi?(ansi) # we found ansi let's consume
             matched = ansi
           elsif matched
             ansi_stack << [matched[0...-1], line_length + word_length]
@@ -173,11 +172,15 @@ module Verse
       output
     end
 
+    def to_chars(text, &block)
+      UnicodeUtils.each_grapheme(text, &block)
+    end
+
     # Visible width of string
     #
     # @api private
     def display_width(string)
-      Unicode::DisplayWidth.of(@sanitizer.sanitize(string))
+      Unicode::DisplayWidth.of(Sanitizer.sanitize(string))
     end
   end # Wrapping
 end # Verse

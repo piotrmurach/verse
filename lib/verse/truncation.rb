@@ -5,7 +5,7 @@ module Verse
   class Truncation
     DEFAULT_TRAILING = '…'.freeze
 
-    DEFAULT_LENGTH = 30.freeze
+    DEFAULT_LENGTH = 30
 
     attr_reader :separator
 
@@ -23,7 +23,6 @@ module Verse
     # @api public
     def initialize(text, options = {})
       @text      = text.dup.freeze
-      @sanitizer = Sanitizer.new
       @separator = options.fetch(:separator) { nil }
       @trailing  = options.fetch(:trailing) { DEFAULT_TRAILING }
     end
@@ -63,7 +62,7 @@ module Verse
       trail      = options.fetch(:trailing) { trailing }
       separation = options.fetch(:separator) { separator }
       width      = display_width(text)
-      sanitized_text = @sanitizer.sanitize(text)
+      sanitized_text = Sanitizer.sanitize(text)
 
       return text if width <= truncate_at
 
@@ -112,7 +111,7 @@ module Verse
 
     # @api private
     def display_width(string)
-      Unicode::DisplayWidth.of(@sanitizer.sanitize(string))
+      Unicode::DisplayWidth.of(Sanitizer.sanitize(string))
     end
   end # Truncation
 end # Verse
