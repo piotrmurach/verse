@@ -1,6 +1,6 @@
 # coding: utf-8
 
-require 'unicode_utils/display_width'
+require 'unicode/display_width'
 require 'unicode_utils/each_grapheme'
 
 require 'verse/alignment'

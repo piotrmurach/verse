@@ -177,7 +177,7 @@ module Verse
     #
     # @api private
     def display_width(string)
-      UnicodeUtils.display_width(@sanitizer.sanitize(string))
+      Unicode::DisplayWidth.of(@sanitizer.sanitize(string))
     end
   end # Wrapping
 end # Verse

@@ -137,7 +137,7 @@ module Verse
 
     # @api private
     def actual_width(text)
-      UnicodeUtils.display_width(@sanitizer.sanitize(text))
+      Unicode::DisplayWidth.of(@sanitizer.sanitize(text))
     end
 
     attr_reader :text
