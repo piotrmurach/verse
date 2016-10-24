@@ -3,7 +3,7 @@ language: ruby
 sudo: false
 cache: bundler
 language: ruby
-bundler_args: --without metrics
+bundler_args: --without benchmarks
 script: "bundle exec rake ci"
 rvm:
   - 2.0.0
