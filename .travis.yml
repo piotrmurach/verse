@@ -12,7 +12,6 @@ rvm:
   - 2.3.1
   - jruby-9.1.1.0
   - jruby-head
-  - rubinius-3.60
   - ruby-head
 matrix:
   allow_failures:
