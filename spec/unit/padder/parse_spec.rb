@@ -34,6 +34,6 @@ RSpec.describe Verse::Padder, '#parse' do
   it "fails to parse unknown value" do
     expect {
       padder.parse(:unknown)
-    }.to raise_error
+    }.to raise_error(Verse::ParseError)
   end
 end

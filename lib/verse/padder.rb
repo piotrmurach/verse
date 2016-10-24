@@ -1,6 +1,8 @@
 # coding: utf-8
 
 module Verse
+  ParseError = Class.new(ArgumentError)
+
   # A class responsible for parsing padding value
   #
   # Used internally by {Verse::Padding}
@@ -55,7 +57,7 @@ module Verse
       elsif value.size == 4
         value
       else
-        fail ArgumentError, 'Wrong :padding parameter, must be an array'
+        fail ParseError, 'Wrong :padding parameter, must be an array'
       end
     end
 
