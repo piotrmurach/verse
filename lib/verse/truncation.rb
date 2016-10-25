@@ -106,7 +106,7 @@ module Verse
 
     # @api private
     def to_chars(text)
-      UnicodeUtils.each_grapheme(text).to_a
+      UnicodeUtils.each_grapheme(text)
     end
 
     # @api private
