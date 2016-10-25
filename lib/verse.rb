@@ -14,7 +14,6 @@ require 'verse/version'
 module Verse
   SPACE   = ' '.freeze
   NEWLINE = "\n".freeze
-  TAB     = "\n".freeze
   RESET   = "\e[0m".freeze
   ANSI    = "\033".freeze
 
