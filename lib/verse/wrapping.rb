@@ -172,8 +172,13 @@ module Verse
       output
     end
 
+    # @api private
     def to_chars(text, &block)
-      UnicodeUtils.each_grapheme(text, &block)
+      if block_given?
+        UnicodeUtils.each_grapheme(text, &block)
+      else
+        UnicodeUtils.each_grapheme(text)
+      end
     end
 
     # Visible width of string
