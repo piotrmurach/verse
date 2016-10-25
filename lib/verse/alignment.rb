@@ -80,6 +80,11 @@ module Verse
 
     protected
 
+    # The text to align
+    #
+    # @ api private
+    attr_reader :text
+
     # @api private
     def convert_to_method(direction)
       case direction.to_sym
@@ -102,7 +107,7 @@ module Verse
 
     # @api private
     def left_justify(text, width, filler)
-      width_diff = width - actual_width(text)
+      width_diff = width - display_width(text)
       if width_diff > 0
         text + filler * width_diff
       else
@@ -112,7 +117,7 @@ module Verse
 
     # @api private
     def right_justify(text, width, filler)
-      width_diff = width - actual_width(text)
+      width_diff = width - display_width(text)
       if width_diff > 0
         filler * width_diff + text
       else
@@ -122,7 +127,7 @@ module Verse
 
     # @api private
     def center_justify(text, width, filler)
-      text_width = actual_width(text)
+      text_width = display_width(text)
       width_diff = width - text_width
       if width_diff > 0
         right_count = (width_diff.to_f / 2).ceil
@@ -134,10 +139,8 @@ module Verse
     end
 
     # @api private
-    def actual_width(text)
+    def display_width(text)
       Unicode::DisplayWidth.of(Sanitizer.sanitize(text))
     end
-
-    attr_reader :text
   end # Alignment
 end # Verse
