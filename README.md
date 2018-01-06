@@ -1,4 +1,5 @@
-# Verse
+# Verse (Inactive, code moved to strings gem and repo.)
+
 [![Gem Version](https://badge.fury.io/rb/verse.svg)][gem]
 [![Build Status](https://secure.travis-ci.org/piotrmurach/verse.svg?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/github/piotrmurach/verse/badges/gpa.png)][codeclimate]
@@ -12,6 +13,8 @@
 [inchpages]: http://inch-ci.org/github/piotrmurach/verse
 
 > Text transformations such as truncation, wrapping, aligning, indentation and grouping of words.
+
+**The functionality of this gem has been reimplemented and added to the strings gem @ [https://github.com/piotrmurach/strings](https://github.com/piotrmurach/strings). The code in this repository is no longer maintained.**
 
 ## Features
 
